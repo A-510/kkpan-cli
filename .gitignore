@@ -1,0 +1,39 @@
+# 编译产物与临时文件
+/kkpan
+/kkpan.exe
+*.exe
+*.test
+*.out
+dist/
+out/
+vendor/
+
+# Node / Bun 包管理器产物
+node_modules/
+*.tgz
+
+# 运行时临时文件、断点状态与账号隐私配置（绝对禁止提交）
+*.kkpan.downloading
+*.kkpan.state.json
+*.kkpan.upload.json
+qrcode.png
+kkpan_config.json
+kkpan_config.json.tmp
+*config*.json
+!package.json
+!tsconfig.json
+!plugins/**/plugin.json
+kkpan_history.txt
+.env
+.env.*
+*.key
+*.pem
+
+# 本地嵌套历史备份目录
+夸克网盘的cli版本/
+
+# IDE 与系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

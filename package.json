@@ -1,0 +1,43 @@
+{
+  "name": "kkpan-cli",
+  "version": "0.1.0",
+  "description": "夸克网盘 Go 命令行与日式二次元全屏终端客户端 (kkpan) —— 支持 npm / bunx 全局分发",
+  "type": "module",
+  "license": "Apache-2.0",
+  "bin": {
+    "kkpan": "./bin/kkpan.mjs"
+  },
+  "files": [
+    "bin/",
+    "scripts/platform.mjs",
+    "scripts/postinstall.mjs",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "DESIGN.md"
+  ],
+  "scripts": {
+    "postinstall": "node ./scripts/postinstall.mjs",
+    "sync-version": "node ./scripts/sync-version.mjs"
+  },
+  "keywords": [
+    "quark",
+    "quark-pan",
+    "kkpan",
+    "cli",
+    "tui",
+    "cloud-storage"
+  ],
+  "author": "A-510",
+  "homepage": "https://github.com/A-510/kkpan-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/A-510/kkpan-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/A-510/kkpan-cli/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

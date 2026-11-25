@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" fill="none">
+  <defs>
+    <linearGradient id="kkRing" x1="16" y1="20" x2="112" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7DCFFF"/>
+      <stop offset="55%" stop-color="#E1B066"/>
+      <stop offset="100%" stop-color="#F29CB8"/>
+    </linearGradient>
+    <linearGradient id="kkCloud" x1="28" y1="42" x2="100" y2="92" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1C2C4E"/>
+      <stop offset="100%" stop-color="#131E36"/>
+    </linearGradient>
+  </defs>
+  <!-- 约 10% 留白内框（14..114） -->
+  <circle cx="64" cy="64" r="46" stroke="url(#kkRing)" stroke-width="4" stroke-dasharray="18 6" opacity="0.92"/>
+  <path d="M44 86H86C94.284 86 101 79.284 101 71C101 63.33 95.242 56.998 87.805 56.105C85.225 45.17 75.405 37 63.65 37C50.036 37 39 48.036 39 61.65C39 62.17 39.016 62.686 39.048 63.198C33.36 64.96 29 70.244 29 76.5C29 81.747 33.253 86 38.5 86H44Z"
+        fill="url(#kkCloud)" stroke="url(#kkRing)" stroke-width="3.5" stroke-linejoin="round"/>
+  <!-- 四芒星徽 -->
+  <path d="M64 49L67.6 59.4L78 63L67.6 66.6L64 77L60.4 66.6L50 63L60.4 59.4L64 49Z"
+        fill="#E1B066"/>
+  <circle cx="88" cy="42" r="3.2" fill="#7DCFFF"/>
+  <circle cx="38" cy="46" r="2.2" fill="#F29CB8"/>
+</svg>

@@ -1,0 +1,33 @@
+# Go 源码、编译产物与本地断点状态绝不进入 npm/bun 分发包
+*.go
+go.mod
+go.sum
+/kkpan
+/kkpan.exe
+*.exe
+*.test
+*.out
+dist/
+out/
+vendor/
+
+# 敏感配置与运行时隐私文件
+*config*.json
+!package.json
+kkpan_history.txt
+qrcode.png
+*.kkpan.downloading
+*.kkpan.state.json
+*.kkpan.upload.json
+.env
+.env.*
+*.key
+*.pem
+
+# 仅保留项目文档与脚本白名单中的文件
+.github/
+plugins/
+quarkpan/
+internal/
+夸克网盘的cli版本/
+.git/

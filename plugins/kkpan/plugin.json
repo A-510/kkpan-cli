@@ -1,0 +1,21 @@
+{
+  "name": "kkpan",
+  "displayName": "kkpan (夸克网盘 CLI)",
+  "version": "0.1.0",
+  "description": "使用 kkpan Go CLI 安全操作夸克网盘：目录浏览、搜索、多线程断点下载、秒传/OSS分片上传、分享转存、分享与回收站管理及账号配额查询。",
+  "logo": "assets/logo.svg",
+  "author": {
+    "name": "A-510",
+    "url": "https://github.com/A-510"
+  },
+  "homepage": "https://github.com/A-510/kkpan-cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/A-510/kkpan-cli"
+  },
+  "suggestedPrompts": [
+    "查看我当前登录的夸克网盘账号和剩余空间配额",
+    "搜索夸克网盘里最近的 PDF 资料并按表格列出路径与大小",
+    "把这个夸克网盘分享链接转存到我网盘的指定文件夹"
+  ]
+}

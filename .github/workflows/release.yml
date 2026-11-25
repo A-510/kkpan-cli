@@ -1,0 +1,120 @@
+name: Release & CI
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Vet & Unit Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Vet and test
+        run: |
+          go vet ./...
+          go test -count=1 ./...
+
+  build:
+    name: Build Matrix (${{ matrix.goos }}/${{ matrix.goarch }})
+    needs: test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        goos: [windows, darwin, linux]
+        goarch: [amd64, arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: Build & Package
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+          VERSION_TAG: ${{ github.ref_type == 'tag' && github.ref_name || 'v0.1.0-dev' }}
+        run: |
+          BIN_NAME="kkpan"
+          if [ "$GOOS" = "windows" ]; then
+            BIN_NAME="kkpan.exe"
+          fi
+          PKG_NAME="kkpan-${VERSION_TAG}-${GOOS}-${GOARCH}"
+          mkdir -p "stage/$PKG_NAME" output
+          go build -trimpath -ldflags "-s -w -X main.Version=${VERSION_TAG}" -o "stage/$PKG_NAME/$BIN_NAME" .
+          cp README.md LICENSE NOTICE "stage/$PKG_NAME/"
+          if [ "$GOOS" = "linux" ]; then
+            tar -czf "output/${PKG_NAME}.tar.gz" -C stage "$PKG_NAME"
+          else
+            (cd stage && zip -qr "../output/${PKG_NAME}.zip" "$PKG_NAME")
+          fi
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: kkpan-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: output/
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist/
+          merge-multiple: true
+      - name: Generate SHA256SUMS
+        run: |
+          cd dist
+          sha256sum kkpan-* > SHA256SUMS
+      - name: Create or Update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG_NAME: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          if gh release view "$TAG_NAME" --repo "$REPO" >/dev/null 2>&1; then
+            gh release upload "$TAG_NAME" dist/* --repo "$REPO" --clobber
+          else
+            gh release create "$TAG_NAME" dist/* --repo "$REPO" --title "$TAG_NAME" --generate-notes
+          fi
+
+  publish-npm:
+    name: Publish npm / bun Package
+    needs: release
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - name: Sync version & verify pack list
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          node ./scripts/sync-version.mjs "$TAG_NAME"
+          npm pack --dry-run
+      - name: Publish to npm (if NPM_TOKEN configured)
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "NPM_TOKEN secret is not configured; skipping npm publish."
+            exit 0
+          fi
+          npm publish --access public

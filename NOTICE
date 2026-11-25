@@ -1,0 +1,10 @@
+kkpan-cli
+Copyright 2026 A-510 (kkpan-cli contributors)
+
+本项目采用 Apache-2.0 许可证开源发布。
+
+致谢与架构参考声明：
+1. 本项目的 CLI 命令分层设计、终端交互美学、--json/--plain 自动化规范以及分片断点传输工程思路，
+   参考了开源项目 pan-tools (https://github.com/qwerprog/pan-tools, Apache-2.0 License)。
+2. 本项目所有夸克网盘协议客户端 (quarkpan/)、阿里云 OSS 分片回调上传与日式二次元全屏 TUI
+   均基于公开协议资料从零独立实现，不包含任何上游受版权保护的二进制或私有密钥。
